@@ -1,7 +1,7 @@
 "use client"
 
-import {FormEvent, useState} from "react"
-import {motion, useScroll, useTransform} from "framer-motion"
+import { useState } from "react"
+import { motion, useScroll, useTransform } from "framer-motion"
 import {
     AlertCircle,
     ArrowRight,
@@ -17,6 +17,25 @@ import {
 } from "lucide-react"
 import Image from "next/image";
 
+/**
+ * @typedef {Object} PainPoint
+ * @property {import('lucide-react').LucideIcon} icon - The icon component
+ * @property {string} text - The pain point text
+ * @property {string} color - The color class for the icon
+ */
+
+/**
+ * @typedef {Object} SocialProvider
+ * @property {string} name - The provider name
+ * @property {string} bg - Background color class
+ * @property {string} icon - Icon path
+ * @property {string} [textColor] - Text color class
+ */
+
+/**
+ * Hero component for the landing page
+ * @returns {React.ReactElement} The hero section
+ */
 const Hero = () => {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
@@ -26,7 +45,11 @@ const Hero = () => {
     const y1 = useTransform(scrollY, [0, 300], [0, -30])
     const y2 = useTransform(scrollY, [0, 300], [0, -60])
 
-    const handleSignup = async (e: FormEvent) => {
+    /**
+     * Handle form submission for signup
+     * @param {React.FormEvent<HTMLFormElement>} e - The form event
+     */
+    const handleSignup = async (e) => {
         e.preventDefault()
         setIsLoading(true)
 
@@ -37,7 +60,11 @@ const Hero = () => {
         }, 2000)
     }
 
-    const handleSocialLogin = (provider: string) => {
+    /**
+     * Handle social login
+     * @param {string} provider - The social provider name
+     */
+    const handleSocialLogin = (provider) => {
         alert(`Signing up with ${provider}...`)
     }
 
@@ -125,6 +152,7 @@ const Hero = () => {
 
                                 {/* Pain points list */}
                                 <div className="space-y-4">
+                                    {/** @type {PainPoint[]} */}
                                     {[
                                         { icon: TrendingDown, text: "Working for pennies on freelance platforms", color: "text-red-400" },
                                         { icon: Clock, text: "Trading time for money with no passive income", color: "text-orange-400" },
@@ -265,6 +293,7 @@ const Hero = () => {
 
                                     {/* Social login buttons */}
                                     <div className="grid grid-cols-3 gap-3">
+                                        {/** @type {SocialProvider[]} */}
                                         {[
                                             { name: "Discord", bg: "bg-white", icon: '/discord-icon.svg' },
                                             { name: "Google", bg: "bg-white", icon: '/google-icon-logo.svg', textColor: "text-gray-900" },
