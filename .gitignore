@@ -38,10 +38,12 @@ yarn-error.log*
 config/secrets.js
 config/secrets.json
 
-/DocumentationFiles
 # vercel
 .vercel
 
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# GitHub Copilot
+.github/

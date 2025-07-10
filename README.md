@@ -69,12 +69,18 @@ To learn more about Next.js, take a look at the following resources:
 
 You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
-## 📚 Documentation
+## 📖 Documentation
 
-- [Security Guidelines](./SECURITY.md) - Comprehensive security checklist and best practices
-- [Authentication System](./DocumentationFiles/AUTHENTICATION.md) - JWT-based auth implementation
-- [Database Setup](./DocumentationFiles/DATABASE.md) - PostgreSQL configuration and schema
-- [Project Structure](./DocumentationFiles/STRUCTURE.md) - Codebase organization and patterns
+- **📚 [Project Wiki](https://github.com/akielkucki/digitalmarketplace/wiki)** - Comprehensive documentation
+- **🚀 [Quick Start Guide](https://github.com/akielkucki/digitalmarketplace/wiki/Quick-Start-Guide)** - Get running in 5 minutes
+- **📡 [API Documentation](https://github.com/akielkucki/digitalmarketplace/wiki/API-Documentation)** - Complete API reference
+- [Security Guidelines](./docs/SECURITY.md) - Comprehensive security checklist and best practices
+- [Wiki Setup Guide](./docs/WIKI-SETUP.md) - How to set up the project wiki
+
+## 🛠️ Utility Scripts
+
+- **Wiki Setup**: `./scripts/setup-wiki.sh` - Automated GitHub wiki setup
+- **Scripts Documentation**: [scripts/README.md](./scripts/README.md) - Available utility scripts
 
 ## 🛡️ Security Features
 
