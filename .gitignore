@@ -2,8 +2,10 @@
 
 # dependencies
 /node_modules
+package-*.json
 /.pnp
 .pnp.js
+
 
 # testing
 /coverage
@@ -45,5 +47,11 @@ config/secrets.json
 *.tsbuildinfo
 next-env.d.ts
 
-# GitHub Copilot
-.github/
+# temporary files
+*.tmp
+*.temp
+test-*.js
+debug-*.js
+
+# wiki repository clone
+wiki-repo/
