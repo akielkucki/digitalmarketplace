@@ -23,15 +23,22 @@ export async function POST(request) {
         
         const { email, password } = requestBody
         
-        const user = await User.findByEmail(email)
-        if (!user) {
+        const userResult = await User.findByEmail(email)
+        if (!userResult.success) {
+            return NextResponse.json(
+                { success: false, error: 'Database error checking user' },
+                { status: 500 }
+            )
+        }
+        
+        if (!userResult.data) {
             return NextResponse.json(
                 { success: false, error: 'Invalid email or password' },
                 { status: 401 }
             )
         }
         
-        const isPasswordValid = await verifyPassword(password, user.password)
+        const isPasswordValid = await verifyPassword(password, userResult.data.password)
         if (!isPasswordValid) {
             return NextResponse.json(
                 { success: false, error: 'Invalid email or password' },
@@ -39,7 +46,7 @@ export async function POST(request) {
             )
         }
         
-        const token = generateToken(user)
+        const token = generateToken(userResult.data)
         
         await setAuthCookie(token)
         
@@ -47,11 +54,11 @@ export async function POST(request) {
             success: true,
             message: 'Login successful',
             user: {
-                id: user.id,
-                email: user.email,
-                name: user.name,
-                role: user.role,
-                createdAt: user.created_at
+                id: userResult.data.id,
+                email: userResult.data.email,
+                name: userResult.data.name,
+                role: userResult.data.role,
+                createdAt: userResult.data.created_at
             }
         })
         

@@ -3,9 +3,14 @@
  */
 
 /**
- * Validate required environment variables
+ * Validate required environment variables (server-side only)
  */
 function validateEnvVars() {
+  // Only validate on server side
+  if (typeof window !== 'undefined') {
+    return // Skip validation on client side
+  }
+  
   const required = [
     'JWT_SECRET',
     'DB_PASSWORD'
@@ -34,7 +39,7 @@ export const APP_CONFIG = {
 }
 
 export const AUTH_CONFIG = {
-  jwtSecret: process.env.JWT_SECRET,
+  jwtSecret: typeof window === 'undefined' ? process.env.JWT_SECRET : null,
   cookieName: 'auth-token',
   cookieMaxAge: 7 * 24 * 60 * 60 * 1000,
   cookieSecure: process.env.NODE_ENV === 'production',
@@ -47,7 +52,7 @@ export const DB_CONFIG = {
   port: parseInt(process.env.DB_PORT || '5432'),
   database: process.env.DB_NAME || 'authdb',
   user: process.env.DB_USER || 'postgres',
-  password: process.env.DB_PASSWORD,
+  password: typeof window === 'undefined' ? process.env.DB_PASSWORD : null,
   ssl: process.env.NODE_ENV === 'production'
 }
 

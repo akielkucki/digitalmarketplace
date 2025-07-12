@@ -23,8 +23,15 @@ export async function POST(request) {
         
         const { email, password, name } = requestBody
         
-        const existingUser = await User.findByEmail(email)
-        if (existingUser) {
+        const existingUserResult = await User.findByEmail(email)
+        if (!existingUserResult.success) {
+            return NextResponse.json(
+                { success: false, error: 'Database error checking existing user' },
+                { status: 500 }
+            )
+        }
+        
+        if (existingUserResult.data) {
             return NextResponse.json(
                 { success: false, error: 'User with this email already exists' },
                 { status: 409 }
@@ -33,14 +40,21 @@ export async function POST(request) {
         
         const hashedPassword = await hashPassword(password)
         
-        const newUser = await User.create({
+        const newUserResult = await User.create({
             email,
             password: hashedPassword,
             name: name || null,
             role: 'user'
         })
         
-        const token = generateToken(newUser)
+        if (!newUserResult.success) {
+            return NextResponse.json(
+                { success: false, error: 'Failed to create user account' },
+                { status: 500 }
+            )
+        }
+        
+        const token = generateToken(newUserResult.data)
         
         await setAuthCookie(token)
         
@@ -48,11 +62,11 @@ export async function POST(request) {
             success: true,
             message: 'Account created successfully',
             user: {
-                id: newUser.id,
-                email: newUser.email,
-                name: newUser.name,
-                role: newUser.role,
-                createdAt: newUser.created_at
+                id: newUserResult.data.id,
+                email: newUserResult.data.email,
+                name: newUserResult.data.name,
+                role: newUserResult.data.role,
+                createdAt: newUserResult.data.created_at
             }
         })
         

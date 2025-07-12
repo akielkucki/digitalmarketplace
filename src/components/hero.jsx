@@ -87,16 +87,16 @@ const Hero = () => {
     }
 
     return (
-        <div className="min-h-screen bg-black text-white relative overflow-hidden">
+        <section className="relative min-h-screen overflow-hidden bg-black text-white">
             {/* Animated background */}
             <div className="absolute inset-0 z-0">
                 <motion.div
                     style={{ y: y1 }}
-                    className="absolute top-1/4 left-1/6 w-96 h-96 bg-purple-600/20 rounded-full blur-3xl"
+                    className="absolute top-1/4 left-1/6 w-96 h-96 rounded-full blur-3xl bg-purple-600/20"
                 />
                 <motion.div
                     style={{ y: y2 }}
-                    className="absolute bottom-1/4 right-1/6 w-80 h-80 bg-purple-500/15 rounded-full blur-3xl"
+                    className="absolute bottom-1/4 right-1/6 w-80 h-80 rounded-full blur-3xl bg-purple-500/15"
                 />
 
                 {/* Grid pattern overlay */}
@@ -112,107 +112,108 @@ const Hero = () => {
             </div>
 
             {/* Main content */}
-            <div className="relative z-10 min-h-screen flex items-center px-4 py-16">
-                <div className="max-w-7xl mx-auto w-full">
-                    <div className="grid lg:grid-cols-2 gap-16 items-center">
+            <main className="relative z-10 flex min-h-screen items-center px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
+                <div className="mx-auto w-full max-w-7xl">
+                    <div className="grid items-center gap-8 sm:gap-12 lg:gap-16 lg:grid-cols-2">
 
                         {/* Left side - Pain Point */}
                         <motion.div
                             initial={{ opacity: 0, x: -50 }}
                             animate={{ opacity: 1, x: 0 }}
                             transition={{ duration: 0.8 }}
-                            className="space-y-8"
                         >
-                            {/* Problem badge */}
-                            <motion.div
-                                initial={{ opacity: 0, y: -10 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ delay: 0.2 }}
-                                className="inline-flex items-center bg-red-900/30 text-red-400 rounded-full px-4 py-2 text-sm font-medium border border-red-500/30"
-                            >
-                                <AlertCircle className="w-4 h-4 mr-2" />
-                                The Developer Income Problem
-                            </motion.div>
+                            <header className="space-y-6 sm:space-y-8">
+                                {/* Problem badge */}
+                                <motion.div
+                                    initial={{ opacity: 0, y: -10 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ delay: 0.2 }}
+                                    className="inline-flex items-center rounded-full border border-red-500/30 px-4 py-2 text-sm font-medium bg-red-900/30 text-red-400"
+                                >
+                                    <AlertCircle className="w-4 h-4 mr-2" />
+                                    The Developer Income Problem
+                                </motion.div>
 
-                            <motion.h1
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                transition={{ duration: 0.8, delay: 0.3 }}
-                                className="text-4xl md:text-6xl font-bold leading-tight"
-                            >
-                                {'Your Code Skills'.split(' ').map((word, index) => (
-                                    <motion.span
-                                        key={word}
-                                        animate={{color: ["#707070", "#FFFFFF"]}}
-                                        transition={{duration: 0.8, delay: 0.5*index}}
-                                    >{word}{' '}</motion.span>
-                                ))}
-                                <br/>
-                                <motion.span
-                                    animate={{color: ["#707070", "#FFFFFF"]}}
-                                    transition={{duration: 0.8, delay: 1.3}}
-                                >Aren&apos;t Paying the <motion.span
-                                    animate={{color: ["#707070","#FFFFFF"]}}
-                                    transition={{ duration: 0.8, delay: 1.8 }}
-                                >Bills</motion.span></motion.span>
-                            </motion.h1>
-
-                            <motion.div
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                transition={{ duration: 0.8, delay: 0.4 }}
-                                className="space-y-6"
-                            >
-                                <p className="text-xl text-gray-300 leading-relaxed">
-                                    You&apos;re building amazing things, but your bank account doesn&apos;t reflect your talent.
-                                    Sound familiar?
-                                </p>
-
-                                {/* Pain points list */}
-                                <div className="space-y-4">
-                                    {/** @type {PainPoint[]} */}
-                                    {[
-                                        { icon: TrendingDown, text: "Working for pennies on freelance platforms", color: "text-red-400" },
-                                        { icon: Clock, text: "Trading time for money with no passive income", color: "text-orange-400" },
-                                        { icon: DollarSign, text: "Watching others monetize while you struggle", color: "text-yellow-400" }
-                                    ].map((pain, index) => (
-                                        <motion.div
-                                            key={index}
-                                            initial={{ opacity: 0, x: -20 }}
-                                            animate={{ opacity: 1, x: 0 }}
-                                            transition={{ delay: 0.5 + index * 0.1 }}
-                                            className="flex items-center space-x-3 group"
-                                        >
-                                            <pain.icon className={`w-5 h-5 ${pain.color} group-hover:scale-110 transition-transform`} />
-                                            <span className="text-gray-300 group-hover:text-white transition-colors">
-                        {pain.text}
-                      </span>
-                                        </motion.div>
+                                <motion.h1
+                                    initial={{ opacity: 0 }}
+                                    animate={{ opacity: 1 }}
+                                    transition={{ duration: 0.8, delay: 0.3 }}
+                                    className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight"
+                                >
+                                    {'Your Code Skills'.split(' ').map((word, index) => (
+                                        <motion.span
+                                            key={word}
+                                            animate={{color: ["#707070", "#FFFFFF"]}}
+                                            transition={{duration: 0.8, delay: 0.5*index}}
+                                        >{word}{' '}</motion.span>
                                     ))}
-                                </div>
-                            </motion.div>
+                                    <br/>
+                                    <motion.span
+                                        animate={{color: ["#707070", "#FFFFFF"]}}
+                                        transition={{duration: 0.8, delay: 1.3}}
+                                    >Aren&apos;t Paying the <motion.span
+                                        animate={{color: ["#707070","#FFFFFF"]}}
+                                        transition={{ duration: 0.8, delay: 1.8 }}
+                                    >Bills</motion.span></motion.span>
+                                </motion.h1>
 
-                            {/* Solution teaser */}
-                            <motion.div
-                                initial={{ opacity: 0, y: 20 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ delay: 0.8 }}
-                                className="bg-gradient-to-r from-purple-900/50 to-purple-800/30 rounded-xl p-6 border border-purple-500/30"
-                            >
-                                <div className="flex items-start space-x-3">
-                                    <div className="w-8 h-8 bg-purple-600 rounded-lg flex items-center justify-center flex-shrink-0 mt-1">
-                                        <Zap className="w-4 h-4 text-white" />
+                                <motion.div
+                                    initial={{ opacity: 0 }}
+                                    animate={{ opacity: 1 }}
+                                    transition={{ duration: 0.8, delay: 0.4 }}
+                                    className="space-y-4 sm:space-y-6"
+                                >
+                                    <p className="text-lg sm:text-xl text-gray-300 leading-relaxed">
+                                        You&apos;re building amazing things, but your bank account doesn&apos;t reflect your talent.
+                                        Sound familiar?
+                                    </p>
+
+                                    {/* Pain points list */}
+                                    <div className="space-y-3 sm:space-y-4">
+                                        {/** @type {PainPoint[]} */}
+                                        {[
+                                            { icon: TrendingDown, text: "Working for pennies on freelance platforms", color: "text-red-400" },
+                                            { icon: Clock, text: "Trading time for money with no passive income", color: "text-orange-400" },
+                                            { icon: DollarSign, text: "Watching others monetize while you struggle", color: "text-yellow-400" }
+                                        ].map((pain, index) => (
+                                            <motion.div
+                                                key={index}
+                                                initial={{ opacity: 0, x: -20 }}
+                                                animate={{ opacity: 1, x: 0 }}
+                                                transition={{ delay: 0.5 + index * 0.1 }}
+                                                className="flex items-center space-x-3 group"
+                                            >
+                                                <pain.icon className={`w-5 h-5 ${pain.color} group-hover:scale-110 transition-transform`} />
+                                                <span className="text-gray-300 group-hover:text-white transition-colors">
+                                                    {pain.text}
+                                                </span>
+                                            </motion.div>
+                                        ))}
                                     </div>
-                                    <div>
-                                        <h3 className="font-semibold text-white mb-2">
-                                            What if you could turn every project into passive income?
-                                        </h3>
-                                        <p className="text-purple-200 text-sm">
-                                            Join 50,000+ developers earning $500-$15k/month by selling their code once and earning forever.
-                                        </p>
+                                </motion.div>
+
+                                {/* Solution teaser */}
+                                <motion.div
+                                    initial={{ opacity: 0, y: 20 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ delay: 0.8 }}
+                                    className="bg-gradient-to-r from-purple-900/50 to-purple-800/30 rounded-xl p-6 border border-purple-500/30"
+                                >
+                                    <div className="flex items-start space-x-3">
+                                        <div className="w-8 h-8 bg-purple-600 rounded-lg flex items-center justify-center flex-shrink-0 mt-1">
+                                            <Zap className="w-4 h-4 text-white" />
+                                        </div>
+                                        <div>
+                                            <h3 className="font-semibold text-white mb-2">
+                                                What if you could turn every project into passive income?
+                                            </h3>
+                                            <p className="text-purple-200 text-sm">
+                                                Join 50,000+ developers earning $500-$15k/month by selling their code once and earning forever.
+                                            </p>
+                                        </div>
                                     </div>
-                                </div>
-                            </motion.div>
+                                </motion.div>
+                            </header>
                         </motion.div>
 
                         {/* Right side - Signup Form */}
@@ -220,13 +221,13 @@ const Hero = () => {
                             initial={{ opacity: 0, x: 50 }}
                             animate={{ opacity: 1, x: 0 }}
                             transition={{ duration: 0.8, delay: 0.2 }}
-                            className="lg:justify-self-end w-full max-w-md"
+                            className="w-full max-w-md lg:justify-self-end"
                         >
                             {/* This div will be hidden on large screens since we have the floating form */}
-                            <div className="lg:hidden bg-gradient-to-br from-gray-900/80 to-gray-800/60 backdrop-blur-xl rounded-2xl p-8 border border-purple-500/20 shadow-2xl shadow-purple-500/10">
+                            <div className="rounded-2xl border border-purple-500/20 bg-gradient-to-br from-gray-900/80 to-gray-800/60 p-6 sm:p-8 shadow-2xl shadow-purple-500/10 backdrop-blur-xl lg:hidden">
 
                                 {/* Form header */}
-                                <div className="text-center mb-8">
+                                <div className="mb-6 sm:mb-8 text-center">
                                     <motion.div
                                         initial={{ opacity: 0, scale: 0.8 }}
                                         animate={{ opacity: 1, scale: 1 }}
@@ -236,48 +237,53 @@ const Hero = () => {
                                         <Code className="w-6 h-6 text-white" />
                                     </motion.div>
 
-                                    <h2 className="text-2xl font-bold text-white mb-2">Start Earning Today</h2>
-                                    <p className="text-gray-400">
+                                    <h2 id="signup-form-title" className="mb-2 text-xl sm:text-2xl font-bold text-white">Start Earning Today</h2>
+                                    <p className="text-sm sm:text-base text-gray-400">
                                         Create an account and discover how to monetize your code
                                     </p>
                                 </div>
 
                                 {/* Signup form */}
-                                <form onSubmit={handleSignup} className="space-y-6">
+                                <form onSubmit={handleSignup} className="space-y-6" role="form" aria-labelledby="signup-form-title">
                                     <div>
-                                        <label className="block text-sm font-medium text-gray-300 mb-2">
+                                        <label htmlFor="email-input" className="block text-sm font-medium text-gray-300 mb-2">
                                             Email
                                         </label>
                                         <div className="relative">
                                             <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
                                             <input
+                                                id="email-input"
                                                 type="email"
                                                 value={email}
                                                 onChange={(e) => setEmail(e.target.value)}
                                                 className="w-full pl-10 pr-4 py-3 bg-gray-800/50 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:border-purple-500 focus:ring-1 focus:ring-purple-500 transition-colors"
                                                 placeholder="your@email.com"
                                                 required
+                                                aria-describedby="email-help"
                                             />
                                         </div>
                                     </div>
 
                                     <div>
-                                        <label className="block text-sm font-medium text-gray-300 mb-2">
+                                        <label htmlFor="password-input" className="block text-sm font-medium text-gray-300 mb-2">
                                             Password
                                         </label>
                                         <div className="relative">
                                             <input
+                                                id="password-input"
                                                 type={showPassword ? "text" : "password"}
                                                 value={password}
                                                 onChange={(e) => setPassword(e.target.value)}
                                                 className="w-full pl-4 pr-12 py-3 bg-gray-800/50 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:border-purple-500 focus:ring-1 focus:ring-purple-500 transition-colors"
                                                 placeholder="Create a password"
                                                 required
+                                                aria-describedby="password-help"
                                             />
                                             <button
                                                 type="button"
                                                 onClick={() => setShowPassword(!showPassword)}
                                                 className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-300"
+                                                aria-label={showPassword ? "Hide password" : "Show password"}
                                             >
                                                 {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                                             </button>
@@ -362,16 +368,16 @@ const Hero = () => {
                         </motion.div>
                     </div>
                 </div>
-            </div>
+            </main>
 
             {/* Floating Signup Form - Only visible on large screens */}
             <motion.div
                 initial={{ opacity: 0, x: 50 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.8, delay: 0.2 }}
-                className="hidden lg:block fixed top-1/2 right-8 transform -translate-y-1/2 w-full max-w-md z-20"
+                className="fixed top-1/2 right-4 xl:right-8 z-20 hidden w-full max-w-md -translate-y-1/2 transform lg:block"
             >
-                <div className="bg-gradient-to-br from-gray-900/90 to-gray-800/70 backdrop-blur-xl rounded-2xl p-8 border border-purple-500/20 shadow-2xl shadow-purple-500/10">
+                <div className="rounded-2xl border border-purple-500/20 bg-gradient-to-br from-gray-900/90 to-gray-800/70 p-6 xl:p-8 shadow-2xl shadow-purple-500/10 backdrop-blur-xl">
 
                     {/* Form header */}
                     <div className="text-center mb-8">
@@ -384,8 +390,8 @@ const Hero = () => {
                             <Code className="w-6 h-6 text-white" />
                         </motion.div>
 
-                        <h2 className="text-2xl font-bold text-white mb-2">Start Earning Today</h2>
-                        <p className="text-gray-400">
+                        <h2 className="mb-2 text-xl xl:text-2xl font-bold text-white">Start Earning Today</h2>
+                        <p className="text-sm xl:text-base text-gray-400">
                             Create an account and discover how to monetize your code
                         </p>
                     </div>
@@ -510,7 +516,7 @@ const Hero = () => {
                     </motion.div>
                 </div>
             </motion.div>
-        </div>
+        </section>
     )
 }
 

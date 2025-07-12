@@ -15,7 +15,17 @@ export async function POST() {
             )
         }
         
-        await runMigrations()
+        const migrationResult = await runMigrations()
+        
+        if (!migrationResult.success) {
+            return NextResponse.json(
+                { 
+                    success: false, 
+                    error: migrationResult.error,
+                },
+                { status: 500 }
+            )
+        }
         
         return NextResponse.json({
             success: true,

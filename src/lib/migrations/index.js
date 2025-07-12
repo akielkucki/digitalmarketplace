@@ -2,10 +2,11 @@ import { query } from '@/lib/db'
 
 /**
  * Initial database migration - Create users table
+ * @returns {Promise<{success: boolean, error: string|null, data?: boolean}>} Migration result
  */
 export const createUsersTable = async () => {
     try {
-        await query(`
+        const tableResult = await query(`
             CREATE TABLE IF NOT EXISTS users (
                 id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
                 email VARCHAR(255) UNIQUE NOT NULL,
@@ -18,25 +19,50 @@ export const createUsersTable = async () => {
             );
         `)
         
+        if (!tableResult.success) {
+            return {
+                success: false,
+                error: `Failed to create users table: ${tableResult.error}`,
+                data: null
+            }
+        }
+        
         // Create index on email for faster lookups
-        await query(`
+        const indexResult = await query(`
             CREATE INDEX IF NOT EXISTS idx_users_email ON users(email);
         `)
         
+        if (!indexResult.success) {
+            return {
+                success: false,
+                error: `Failed to create users email index: ${indexResult.error}`,
+                data: null
+            }
+        }
+        
         console.log('✅ Users table created successfully')
-        return true
+        return {
+            success: true,
+            error: null,
+            data: true
+        }
     } catch (error) {
         console.error('❌ Error creating users table:', error)
-        throw error
+        return {
+            success: false,
+            error: error.message || 'Failed to create users table',
+            data: null
+        }
     }
 }
 
 /**
  * Create sessions table for authentication
+ * @returns {Promise<{success: boolean, error: string|null, data?: boolean}>} Migration result
  */
 export const createSessionsTable = async () => {
     try {
-        await query(`
+        const tableResult = await query(`
             CREATE TABLE IF NOT EXISTS sessions (
                 id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
                 user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
@@ -46,28 +72,62 @@ export const createSessionsTable = async () => {
             );
         `)
         
+        if (!tableResult.success) {
+            return {
+                success: false,
+                error: `Failed to create sessions table: ${tableResult.error}`,
+                data: null
+            }
+        }
+        
         // Create index on user_id and token
-        await query(`
+        const userIdIndexResult = await query(`
             CREATE INDEX IF NOT EXISTS idx_sessions_user_id ON sessions(user_id);
         `)
-        await query(`
+        
+        if (!userIdIndexResult.success) {
+            return {
+                success: false,
+                error: `Failed to create sessions user_id index: ${userIdIndexResult.error}`,
+                data: null
+            }
+        }
+        
+        const tokenIndexResult = await query(`
             CREATE INDEX IF NOT EXISTS idx_sessions_token ON sessions(token);
         `)
         
+        if (!tokenIndexResult.success) {
+            return {
+                success: false,
+                error: `Failed to create sessions token index: ${tokenIndexResult.error}`,
+                data: null
+            }
+        }
+        
         console.log('✅ Sessions table created successfully')
-        return true
+        return {
+            success: true,
+            error: null,
+            data: true
+        }
     } catch (error) {
         console.error('❌ Error creating sessions table:', error)
-        throw error
+        return {
+            success: false,
+            error: error.message || 'Failed to create sessions table',
+            data: null
+        }
     }
 }
 
 /**
  * Create projects table for code selling platform
+ * @returns {Promise<{success: boolean, error: string|null, data?: boolean}>} Migration result
  */
 export const createProjectsTable = async () => {
     try {
-        await query(`
+        const tableResult = await query(`
             CREATE TABLE IF NOT EXISTS projects (
                 id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
                 user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
@@ -85,40 +145,114 @@ export const createProjectsTable = async () => {
             );
         `)
         
+        if (!tableResult.success) {
+            return {
+                success: false,
+                error: `Failed to create projects table: ${tableResult.error}`,
+                data: null
+            }
+        }
+        
         // Create indexes
-        await query(`
+        const userIdIndexResult = await query(`
             CREATE INDEX IF NOT EXISTS idx_projects_user_id ON projects(user_id);
         `)
-        await query(`
+        
+        if (!userIdIndexResult.success) {
+            return {
+                success: false,
+                error: `Failed to create projects user_id index: ${userIdIndexResult.error}`,
+                data: null
+            }
+        }
+        
+        const activeIndexResult = await query(`
             CREATE INDEX IF NOT EXISTS idx_projects_active ON projects(is_active);
         `)
-        await query(`
+        
+        if (!activeIndexResult.success) {
+            return {
+                success: false,
+                error: `Failed to create projects active index: ${activeIndexResult.error}`,
+                data: null
+            }
+        }
+        
+        const priceIndexResult = await query(`
             CREATE INDEX IF NOT EXISTS idx_projects_price ON projects(price);
         `)
         
+        if (!priceIndexResult.success) {
+            return {
+                success: false,
+                error: `Failed to create projects price index: ${priceIndexResult.error}`,
+                data: null
+            }
+        }
+        
         console.log('✅ Projects table created successfully')
-        return true
+        return {
+            success: true,
+            error: null,
+            data: true
+        }
     } catch (error) {
         console.error('❌ Error creating projects table:', error)
-        throw error
+        return {
+            success: false,
+            error: error.message || 'Failed to create projects table',
+            data: null
+        }
     }
 }
 
 /**
  * Run all migrations
+ * @returns {Promise<{success: boolean, error: string|null, data?: boolean}>} Migration result
  */
 export const runMigrations = async () => {
     console.log('🚀 Running database migrations...')
     
     try {
-        await createUsersTable()
-        await createSessionsTable()
-        await createProjectsTable()
+        const usersResult = await createUsersTable()
+        if (!usersResult.success) {
+            return {
+                success: false,
+                error: `Users table migration failed: ${usersResult.error}`,
+                data: null
+            }
+        }
+        
+        const sessionsResult = await createSessionsTable()
+        if (!sessionsResult.success) {
+            return {
+                success: false,
+                error: `Sessions table migration failed: ${sessionsResult.error}`,
+                data: null
+            }
+        }
+        
+        const projectsResult = await createProjectsTable()
+        if (!projectsResult.success) {
+            return {
+                success: false,
+                error: `Projects table migration failed: ${projectsResult.error}`,
+                data: null
+            }
+        }
         
         console.log('✅ All migrations completed successfully')
-        return true
+        return {
+            success: true,
+            error: null,
+            data: true
+        }
     } catch (error) {
         console.error('❌ Migration failed:', error)
-        throw error
+        return {
+            success: false,
+            error: error.message || 'Migration process failed',
+            data: null
+        }
     }
 }

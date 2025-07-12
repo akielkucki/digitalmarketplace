@@ -28,12 +28,19 @@ export async function GET() {
                 NOW() as current_time
         `)
         
+        if (!dbInfo.success) {
+            return NextResponse.json(
+                { success: false, error: 'Failed to get database info' },
+                { status: 500 }
+            )
+        }
+        
         return NextResponse.json({
             success: true,
             message: 'Database connection successful',
             data: {
                 connected: true,
-                ...dbInfo.rows[0]
+                ...dbInfo.data.rows[0]
             }
         })
         

@@ -19,8 +19,15 @@ export async function GET() {
             )
         }
         
-        const user = await User.findById(authUser.sub)
-        if (!user) {
+        const userResult = await User.findById(authUser.sub)
+        if (!userResult.success) {
+            return NextResponse.json(
+                { success: false, error: 'Database error retrieving user' },
+                { status: 500 }
+            )
+        }
+        
+        if (!userResult.data) {
             return NextResponse.json(
                 { success: false, error: 'User not found' },
                 { status: 404 }
@@ -30,12 +37,12 @@ export async function GET() {
         return NextResponse.json({
             success: true,
             user: {
-                id: user.id,
-                email: user.email,
-                name: user.name,
-                role: user.role,
-                createdAt: user.created_at,
-                updatedAt: user.updated_at
+                id: userResult.data.id,
+                email: userResult.data.email,
+                name: userResult.data.name,
+                role: userResult.data.role,
+                createdAt: userResult.data.created_at,
+                updatedAt: userResult.data.updated_at
             }
         })
         

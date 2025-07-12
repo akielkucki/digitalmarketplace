@@ -43,7 +43,7 @@ export function getDbPool() {
  * Execute a database query
  * @param {string} text - SQL query text
  * @param {any[]} [params] - Query parameters
- * @returns {Promise<any>} Query result
+ * @returns {Promise<{success: boolean, error: string|null, data?: any}>} Structured query result
  */
 export async function query(text, params = []) {
   const pool = getDbPool()
@@ -59,10 +59,18 @@ export async function query(text, params = []) {
       rows: result.rowCount 
     })
     
-    return result
+    return {
+      success: true,
+      error: null,
+      data: result
+    }
   } catch (error) {
     console.error('❌ Database query error:', error)
-    throw error
+    return {
+      success: false,
+      error: error.message || 'Database query failed',
+      data: null
+    }
   }
 }
 
@@ -82,7 +90,13 @@ export async function getClient() {
 export async function testConnection() {
   try {
     const result = await query('SELECT NOW() as current_time')
-    console.log('✅ Database connection test successful:', result.rows[0])
+    
+    if (!result.success) {
+      console.error('❌ Database connection test failed:', result.error)
+      return false
+    }
+    
+    console.log('✅ Database connection test successful:', result.data.rows[0])
     return true
   } catch (error) {
     console.error('❌ Database connection test failed:', error.message)
