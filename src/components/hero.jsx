@@ -17,6 +17,7 @@ import {
 } from "lucide-react"
 import Image from "next/image"
 import { SOCIAL_PROVIDERS, ROUTES } from "@/constants/index.mjs"
+import { handleOAuthSignIn } from "@/lib/auth-oauth"
 
 /**
  * @typedef {Object} PainPoint
@@ -42,6 +43,7 @@ const Hero = () => {
     const [password, setPassword] = useState("")
     const [showPassword, setShowPassword] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
+    const [loadingProvider, setLoadingProvider] = useState(null)
     const { scrollY } = useScroll()
     const y1 = useTransform(scrollY, [0, 300], [0, -30])
     const y2 = useTransform(scrollY, [0, 300], [0, -60])
@@ -79,11 +81,30 @@ const Hero = () => {
     }
 
     /**
-     * Handle social login
+     * Handle social login/signup with OAuth providers
      * @param {string} provider - The social provider name
      */
-    const handleSocialLogin = (provider) => {
-        alert(`Signing up with ${provider}...`)
+    const handleSocialLogin = async (provider) => {
+        setIsLoading(true)
+        setLoadingProvider(provider)
+        
+        try {
+            // Convert provider name to lowercase for OAuth function
+            const providerId = provider.toLowerCase()
+            const result = await handleOAuthSignIn(providerId, ROUTES.protected.dashboard)
+            
+            if (!result.success) {
+                console.error('OAuth signup failed:', result.error)
+                alert(`Error signing up with ${provider}: ${result.error}`)
+            }
+            // If successful, NextAuth will handle the redirect
+        } catch (error) {
+            console.error('OAuth signup error:', error)
+            alert(`An unexpected error occurred while signing up with ${provider}`)
+        } finally {
+            setIsLoading(false)
+            setLoadingProvider(null)
+        }
     }
 
     return (
@@ -316,19 +337,27 @@ const Hero = () => {
                                         </div>
                                     </div>                        {/* Social login buttons */}
                         <div className="grid grid-cols-3 gap-3">
-                            {SOCIAL_PROVIDERS.map((provider) => (
-                                            <motion.button
-                                                key={provider.name}
-                                                type="button"
-                                                onClick={() => handleSocialLogin(provider.name)}
-                                                whileHover={{ scale: 1.05 }}
-                                                whileTap={{ scale: 0.95 }}
-                                                className={`${provider.bg} ${provider.textColor || 'text-white'} py-2 px-4 rounded-lg font-medium transition-all duration-300 flex items-center justify-center cursor-pointer`}
-                                            >
-                                                <Image src={provider.icon} alt={provider.name + " Icon"} width={24} height={24} />
-                                            </motion.button>
-                                        ))}
-                                    </div>
+                            {SOCIAL_PROVIDERS.map((provider) => {
+                                const isProviderLoading = loadingProvider === provider.name
+                                return (
+                                    <motion.button
+                                        key={provider.name}
+                                        type="button"
+                                        onClick={() => handleSocialLogin(provider.name)}
+                                        disabled={isLoading}
+                                        whileHover={!isLoading ? { scale: 1.05 } : {}}
+                                        whileTap={!isLoading ? { scale: 0.95 } : {}}
+                                        className={`${provider.bg} ${provider.textColor || 'text-white'} py-2 px-4 rounded-lg font-medium transition-all duration-300 flex items-center justify-center cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed`}
+                                    >
+                                        {isProviderLoading ? (
+                                            <div className="w-6 h-6 border-2 border-current border-t-transparent rounded-full animate-spin"></div>
+                                        ) : (
+                                            <Image src={provider.icon} alt={provider.name + " Icon"} width={24} height={24} />
+                                        )}
+                                    </motion.button>
+                                )
+                            })}
+                        </div>
 
                                     <div className="text-center text-sm text-gray-400">
                                         By signing up you agree to our{" "}

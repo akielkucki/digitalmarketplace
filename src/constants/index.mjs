@@ -76,7 +76,7 @@ export const ROUTES = {
 }
 
 export const SOCIAL_PROVIDERS = [
-  { name: "Discord", bg: "bg-white", icon: '/discord-icon.svg' },
-  { name: "Google", bg: "bg-white", icon: '/google-icon-logo.svg', textColor: "text-gray-900" },
-  { name: "GitHub", bg: "bg-white", icon: "/github-icon.svg", textColor: "text-white" }
+  { name: "Discord", bg: "bg-indigo-600", icon: '/images/discord-icon.svg', textColor: "text-white" },
+  { name: "Google", bg: "bg-white", icon: '/images/google-icon.svg', textColor: "text-gray-900" },
+  { name: "GitHub", bg: "bg-gray-900", icon: "/images/github-icon.svg", textColor: "text-white" }
 ]
